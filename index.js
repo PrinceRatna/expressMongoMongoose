@@ -23,7 +23,6 @@
 //password sorasori na diye process.env er maddhome deoar try korbo.
 
 //6)connection ta async korte pari.
-
 // ----------------------end-------------------------
 
 //cors,dotenv,async,route sub  kisu valo kore bujte gele nicher link a jabo
@@ -45,15 +44,17 @@
 
 
 
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors=require('cors');
 require('dotenv').config();
-
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const todoHandler=require('./RouteHandler/todoHandler')
 
 
 //port 
-const port=process.env.PORT||5000;
+// const port=5000;
 
 //id use korte hole
 const ObjectId=require('mongodb').ObjectId;
@@ -63,36 +64,70 @@ const app = express();
 app.use(express.json());
 
 
-    //middleware
+    //...................middleware........................
 app.use(cors());
 
-     //database connect with mongoose
-        // mongoose
-        // .connect('mongodb://localhost:27017/test')
-        // .then(()=>console.log('connection successful'))
-        // .catch((err)=>console.log(err))
+    
+
+     // ...............database connect with mongoose................
 
 
-     //application route
-app.get('/',(req,res)=>{
-    res.send('iujoduivpodivpoio');
+     //Give password into uri : BrA3huHII60WYNvl ....[.env te rekhe process.env.Password diye niye asbo]
+     //Give username into uri :expressMongooseCrud...[.env te rekhe process.env.UserName diye niye asbo]
+ 
+    //  give a username to the uri :prince
+    // give a password to the uri :tkVzty2vmopxrwg
+
+const uri = "mongodb+srv://prince:tkVzty2vmopxrwgC@cluster0.eydwt8d.mongodb.net/?retryWrites=true&w=majority";
+mongoose.connect(uri,{ 
+    useNewUrlParser: true,
+     useUnifiedTopology: true,
+      serverApi: ServerApiVersion.v1
 })
+.then(()=>console.log('connection seccessful'))
+.catch((err)=>console.log(err))
+
+
+
+
+
+
+// ......................route..............
+app.use('/todo',todoHandler);
+     
+    
+
+
+
+   
+   
+
+
+
+ //.............application route.....................
+
+
+
+
 
 
 
 
    // default error handler
 function errorHandler(err,req,res,next){
-    if(res.headerSent){
+    if(res.headersSent){
         return next(err);
     }
-    res.status(500).json({error: err});
+    res.status(500).json({
+        error: err
+    });
 }
 
 
 
 
 //port 5000 set korbo..http://localhost:5000 server run hobe.route er kaj gulo[res.send('dfd')] oi link a gele dekhte parbo.
-app.listen(port,()=>{
-    console.log("app listening at port ",port);
+app.listen(5000,()=>{
+    console.log("app listening at port ",5000);
 });
+
